@@ -1,8 +1,12 @@
 {
-  "scripts":{
-    "start":"http-serve ./src"
+  "scripts": {
+    "dev": "webpack serve --mode development"
   },
-  "dependencies": {
-    "http-server": "^14.1.1"
+  "devDependencies": {
+    "html-loader": "^5.0.0",
+    "html-webpack-plugin": "^5.6.0",
+    "webpack": "^5.90.1",
+    "webpack-cli": "^5.1.4",
+    "webpack-dev-server": "^4.15.1"
   }
 }
