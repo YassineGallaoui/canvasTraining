@@ -1,11 +1,8 @@
 let oldTime = 0
-
-let radius = 40
-let currX = 0
-let currY = 0
-
-let mouseX = 0
-let mouseY = 0
+const mousePos= {
+    x: NaN,
+    y: NaN
+}
 
 const getLayerX = (event) => {
     return event.clientX - event.target.getBoundingClientRect().x
@@ -13,6 +10,13 @@ const getLayerX = (event) => {
 
 const getLayerY = (event) => {
     return event.clientY - event.target.getBoundingClientRect().y
+}
+
+const getRandomRGBColor = () => {
+    let randomR = Math.random() * 255
+    let randomG = Math.random() * 255
+    let randomB = Math.random() * 255
+    return `rgba(${randomR}, ${randomG}, ${randomB}, 1)`
 }
 
 const loadScript = () => {
@@ -28,15 +32,9 @@ const loadScript = () => {
     canvas.style.setProperty('width', `${CANVAS_WIDTH}px`)
     canvas.style.setProperty('height', `${CANVAS_HEIGHT}px`)
 
-    currX = canvas.width / 2
-    currY = canvas.height / 2
-
-    mouseX = currX
-    mouseY = currY
-
     canvas.addEventListener('mousemove', (event) => {
-        mouseX = getLayerX(event) * 2
-        mouseY = getLayerY(event) * 2
+        mousePos.x = getLayerX(event) * 2
+        mousePos.y = getLayerY(event) * 2
     })
 
     drawFrame()
@@ -49,12 +47,7 @@ const drawFrame = (ts) => {
     oldTime = ts
 
     ctx.clearRect(0, 0, canvas.width, canvas.height)
-    
-    if(!isNaN(dt)) {
-        currX += (mouseX - currX) * dt
-        currY += (mouseY - currY) * dt
-    }
-    
+
     ctx.lineWidth = 1
     ctx.strokeStyle = "black"
     ctx.beginPath()
@@ -69,11 +62,32 @@ const drawFrame = (ts) => {
     ctx.stroke()
     ctx.closePath()
 
-    ctx.fillStyle = "orange"
+    ctx.fillStyle = 'orange'
     ctx.beginPath()
-    ctx.arc(currX, currY, radius, 0, Math.PI * 2)
-    ctx.fill()
+    ctx.arc(canvas.width / 2, canvas.height / 2, 100, 0, Math.PI * 2)
     ctx.closePath()
+    ctx.fill()
 
+    ctx.fillStyle = 'violet'
+    if (!isNaN(mousePos.x)){
+        ctx.beginPath()
+        ctx.arc(mousePos.x, mousePos.y, 100, 0, Math.PI * 2)
+        ctx.closePath()
+        ctx.fill()
+    } else{
+        ctx.beginPath()
+        ctx.arc(canvas.width / 2, canvas.height / 2 - 250, 100, 0, Math.PI * 2)
+        ctx.closePath()
+        ctx.fill()
+    }
+    
+    const overlapTextBox = document.getElementById('overlapText')
+    if (!isNaN(mousePos.x)){
+        const dist = Math.sqrt(Math.pow((mousePos.x - (canvas.width / 2)), 2) + Math.pow((mousePos.y - (canvas.height / 2)), 2))
+        if (dist < 200)
+            overlapTextBox.innerText = 'OVERLAP'
+        else
+            overlapTextBox.innerText = 'NO overlap'
+    }
     requestAnimationFrame(drawFrame)
 }

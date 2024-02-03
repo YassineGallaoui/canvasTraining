@@ -79,7 +79,6 @@ const drawFrame = (ts) => {
 
     if (rectangles.length !== oldNumber) {
         oldNumber = rectangles.length;
-        console.log(oldNumber);
     }
 
     requestAnimationFrame(drawFrame)

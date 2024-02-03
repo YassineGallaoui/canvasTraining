@@ -69,7 +69,6 @@ const loadScript = () => {
             color: getRandomRGBColor()
         }))
     }
-    console.log('ciao')
     drawFrame()
 }
 
@@ -99,7 +98,6 @@ const drawFrame = (ts) => {
 
     if (rectangles.length !== oldNumber) {
         oldNumber = rectangles.length;
-        console.log(oldNumber);
     }
 
     requestAnimationFrame(drawFrame)

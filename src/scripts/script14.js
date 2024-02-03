@@ -69,7 +69,6 @@ const loadScript = () => {
             color: getRandomRGBColor()
         }))
     }
-    console.log('ciao')
     drawFrame()
 }
 
